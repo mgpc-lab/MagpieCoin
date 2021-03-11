@@ -16,11 +16,17 @@ Mission
 
 Profile
 Name: Magpiecoin
+
 Ticker: MGPC
+
 Algorithm: Yespower
+
 Maximum Supply: 68,948,811,840
+
 Block time: 2.0 minutes
+
 SubsidyHalvingInterval: 420000 blocks
+
 Consensus: POW
 
 
