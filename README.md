@@ -1,6 +1,9 @@
 MagpieCoin
 ================================
 
+
+![MagpieCoin](http://magpiecoin.org/images/logo.png)
+
 Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm
 Make sure there is a mine.
 Because mankind's love for mining is endless. : P
