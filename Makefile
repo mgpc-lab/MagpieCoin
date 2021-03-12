@@ -32,8 +32,8 @@ DEL_DIR       = rmdir
 MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
-DISTNAME      = MagpieCoin-qt0.5.1
-DISTDIR = /home/lds/mycoin3/MagpieCoin/build/MagpieCoin-qt0.5.1
+DISTNAME      = MagpieCoin-qt1.5.1
+DISTDIR = /home/lds/mycoin3/MagpieCoin/build/MagpieCoin-qt1.5.1
 LINK          = g++
 LFLAGS        = -m64 -fstack-protector-all -Wl,-O1
 LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lminiupnpc /home/lds/mycoin3/MagpieCoin/src/leveldb/libleveldb.a /home/lds/mycoin3/MagpieCoin/src/leveldb/libmemenv.a -lrt -lssl -lcrypto -ldb_cxx -lboost_system -lboost_filesystem -lboost_program_options -lboost_thread -lQt5PrintSupport -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lpthread -lGL 
@@ -1519,6 +1519,9 @@ build/addresstablemodel.o: src/qt/addresstablemodel.cpp src/qt/addresstablemodel
 
 build/optionsdialog.o: src/qt/optionsdialog.cpp src/qt/optionsdialog.h \
 		build/ui_optionsdialog.h \
+		src/qt/bitcoinamountfield.h \
+		src/qt/qvalidatedlineedit.h \
+		src/qt/qvaluecombobox.h \
 		src/qt/bitcoinunits.h \
 		src/qt/monitoreddatamapper.h \
 		src/netbase.h \
@@ -1576,6 +1579,7 @@ build/sendcoinsdialog.o: src/qt/sendcoinsdialog.cpp src/qt/sendcoinsdialog.h \
 
 build/coincontroldialog.o: src/qt/coincontroldialog.cpp src/qt/coincontroldialog.h \
 		build/ui_coincontroldialog.h \
+		src/qt/coincontroltreewidget.h \
 		src/init.h \
 		src/wallet.h \
 		src/main.h \
@@ -1630,6 +1634,7 @@ build/addressbookpage.o: src/qt/addressbookpage.cpp src/qt/addressbookpage.h \
 
 build/signverifymessagedialog.o: src/qt/signverifymessagedialog.cpp src/qt/signverifymessagedialog.h \
 		build/ui_signverifymessagedialog.h \
+		src/qt/qvalidatedlineedit.h \
 		src/qt/addressbookpage.h \
 		src/base58.h \
 		src/bignum.h \
@@ -2663,6 +2668,8 @@ build/crypter.o: src/crypter.cpp src/crypter.h \
 
 build/sendcoinsentry.o: src/qt/sendcoinsentry.cpp src/qt/sendcoinsentry.h \
 		build/ui_sendcoinsentry.h \
+		src/qt/bitcoinamountfield.h \
+		src/qt/qvalidatedlineedit.h \
 		src/qt/guiutil.h \
 		src/qt/bitcoinunits.h \
 		src/qt/addressbookpage.h \

@@ -1,7 +1,7 @@
 EMPLATE = app
 TARGET = MagpieCoin-qt
 macx:TARGET = "MagpieCoin"
-VERSION = 0.5.1
+VERSION = 1.5.1
 INCLUDEPATH += src src/json src/qt src/qt/plugins/mrichtexteditor
 QT += core gui network printsupport widgets 
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE BOOST_SPIRIT_THREADSAFE BOOST_THREAD_PROVIDES_GENERIC_SHARED_MUTEX_ON_WIN __NO_SYSTEM_INCLUDES
