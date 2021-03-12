@@ -1193,6 +1193,7 @@ void MapPort(bool)
 // The second name should resolve to a list of seed addresses.
 static const char *strMainNetDNSSeed[][2] = {
         {"seed1.magpiecoin.org", "104.168.165.141"},
+    {"seed2.magpiecoin.org", "170.106.164.30"},
             {"donation1.magpiecoin.org", "160.19.51.78"},     //Thanks to Hong Kong Ms. Chen for her vps donation
     {NULL, NULL}
 };
