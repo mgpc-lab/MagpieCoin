@@ -26,6 +26,8 @@ Block time: 2.0 minutes
 SubsidyHalvingInterval: 420000 blocks
 Consensus: POW
 
+![Block Reward](http://magpiecoin.org/images/br.png)
+
 
 License
 -------
