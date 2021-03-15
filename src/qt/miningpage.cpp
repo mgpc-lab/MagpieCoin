@@ -98,8 +98,8 @@ void MiningPage::startPressed()
         }
         else
         {
-            startPoolMining();
-            typeChanged(1);
+            //startPoolMining();
+            //typeChanged(1);
         }
     }
     else
@@ -111,70 +111,70 @@ void MiningPage::startPressed()
         }
         else
         {
-            stopPoolMining();
-            typeChanged(1);
+            //stopPoolMining();
+            //typeChanged(1);
         }
     }
 }
 
-void MiningPage::startPoolMining()
-{
-    QStringList args;
-  //  QString url = ui->serverLine->text();
-	 QString url = ui->serverLine->text();
-    if (!url.contains("statum+tcp://"))
-        url.prepend("stratum+tcp://");
-  //  QString urlLine = QString("%1:%2").arg(url, ui->portLine->text());
-  QString urlLine = QString("%1:%2").arg(url, ui->portLine->text());
-    QString userpassLine = QString("%1:%2").arg(ui->usernameLine->text(), ui->passwordLine->text());
-    args << "--algo" << "yescrypt";
-    args << "--scantime" << ui->scantimeBox->text().toAscii();
-    args << "--url" << urlLine.toAscii();
-    args << "--userpass" << userpassLine.toAscii();
-    args << "--threads" << ui->threadsBox->text().toAscii();
-    args << "--retries" << "-1"; // Retry forever.
-    args << "-P"; // This is needed for this to work correctly on Windows. Extra protocol dump helps flush the buffer quicker.
+//void MiningPage::startPoolMining()
+//{
+//    QStringList args;
+//  //  QString url = ui->serverLine->text();
+//	 QString url = ui->serverLine->text();
+//    if (!url.contains("statum+tcp://"))
+//        url.prepend("stratum+tcp://");
+//  //  QString urlLine = QString("%1:%2").arg(url, ui->portLine->text());
+//  QString urlLine = QString("%1:%2").arg(url, ui->portLine->text());
+//    QString userpassLine = QString("%1:%2").arg(ui->usernameLine->text(), ui->passwordLine->text());
+//    args << "--algo" << "yescrypt";
+//    args << "--scantime" << ui->scantimeBox->text().toAscii();
+//    args << "--url" << urlLine.toAscii();
+//    args << "--userpass" << userpassLine.toAscii();
+//    args << "--threads" << ui->threadsBox->text().toAscii();
+//    args << "--retries" << "-1"; // Retry forever.
+//    args << "-P"; // This is needed for this to work correctly on Windows. Extra protocol dump helps flush the buffer quicker.
 
-    threadSpeed.clear();
+//    threadSpeed.clear();
 
-    acceptedShares = 0;
-    rejectedShares = 0;
+//    acceptedShares = 0;
+//    rejectedShares = 0;
 
-    roundAcceptedShares = 0;
-    roundRejectedShares = 0;
+//    roundAcceptedShares = 0;
+//    roundRejectedShares = 0;
 
-    // If minerd is in current path, then use that. Otherwise, assume minerd is in the path somewhere.
-    QString program = QDir::current().filePath("minerd");
-    if (!QFile::exists(program))
-        program = "minerd";
-
-    
-
-    if (ui->debugCheckBox->isChecked())
-        ui->list->addItem(args.join(" ").prepend(" ").prepend(program));
+//    // If minerd is in current path, then use that. Otherwise, assume minerd is in the path somewhere.
+//    QString program = QDir::current().filePath("minerd");
+//    if (!QFile::exists(program))
+//        program = "minerd";
 
     
 
-    ui->mineSpeedLabel->setText("Speed: N/A");
-    ui->shareCount->setText("Accepted: 0 - Rejected: 0");
-    minerProcess->start(program,args);
-    minerProcess->waitForStarted(-1);
-
-    readTimer->start(500);
+//    if (ui->debugCheckBox->isChecked())
+//        ui->list->addItem(args.join(" ").prepend(" ").prepend(program));
 
     
-}
 
-void MiningPage::stopPoolMining()
-{
-    
+//    ui->mineSpeedLabel->setText("Speed: N/A");
+//    ui->shareCount->setText("Accepted: 0 - Rejected: 0");
+//    minerProcess->start(program,args);
+//    minerProcess->waitForStarted(-1);
 
-    ui->mineSpeedLabel->setText("");
-    minerProcess->kill();
-    readTimer->stop();
+//    readTimer->start(500);
 
     
-}
+//}
+
+//void MiningPage::stopPoolMining()
+//{
+    
+
+//    ui->mineSpeedLabel->setText("");
+//    minerProcess->kill();
+//    readTimer->stop();
+
+    
+//}
 
 void MiningPage::saveSettings()
 {    
@@ -288,7 +288,7 @@ void MiningPage::minerError(QProcess::ProcessError error)
 
     if (error == QProcess::FailedToStart)
     {
-        reportToList("Miner failed to start. Make sure you have the minerd executable and libraries in the same directory as MaxCoin-Qt.", ERROR, NULL);
+        reportToList("Miner failed to start. Make sure you have the minerd executable and libraries in the same directory as MagpieCoin-Qt.", ERROR, NULL);
     }
 }
 
@@ -448,14 +448,14 @@ void MiningPage::enableMiningControls(bool enable)
     ui->passwordLine->setEnabled(enable);
 }
 
-void MiningPage::enablePoolMiningControls(bool enable)
-{
-    ui->scantimeBox->setEnabled(enable);
-    ui->serverLine->setEnabled(enable);
-    ui->portLine->setEnabled(enable);
-    ui->usernameLine->setEnabled(enable);
-    ui->passwordLine->setEnabled(enable);
-}
+//void MiningPage::enablePoolMiningControls(bool enable)
+//{
+//    ui->scantimeBox->setEnabled(enable);
+//    ui->serverLine->setEnabled(enable);
+//    ui->portLine->setEnabled(enable);
+//    ui->usernameLine->setEnabled(enable);
+//    ui->passwordLine->setEnabled(enable);
+//}
 
 ClientModel::MiningType MiningPage::getMiningType()
 {
@@ -476,18 +476,18 @@ ClientModel::MiningType MiningPage::getMiningType()
 
     
 
-    return ClientModel::PoolMining;
+    return ClientModel::SoloMining;
 }
 
 void MiningPage::typeChanged(int index)
 {
     if (index == 0)  // Pool Mining
     {
-        enablePoolMiningControls(true);
+        //enablePoolMiningControls(true);
     }
     else if (index == 1)  // Solo Mining
     {
-        enablePoolMiningControls(false);
+        //enablePoolMiningControls(false);
     }
 }
 

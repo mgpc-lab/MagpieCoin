@@ -56,8 +56,8 @@ public:
 public slots:
     void startPressed();
 
-    void startPoolMining();
-    void stopPoolMining();
+//    void startPoolMining();
+//    void stopPoolMining();
 
     void updateSpeed();
 
@@ -77,7 +77,7 @@ public slots:
 
     QString getTime(QString);
     void enableMiningControls(bool enable);
-    void enablePoolMiningControls(bool enable);
+//    void enablePoolMiningControls(bool enable);
     ClientModel::MiningType getMiningType();
     void typeChanged(int index);
     void debugToggled(bool checked);
