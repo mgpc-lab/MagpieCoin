@@ -1194,7 +1194,10 @@ void MapPort(bool)
 static const char *strMainNetDNSSeed[][2] = {
         {"seed1.magpiecoin.org", "104.168.165.141"},
     {"seed2.magpiecoin.org", "170.106.164.30"},
-            {"donation1.magpiecoin.org", "160.19.51.78"},     //Thanks to Hong Kong Ms. Chen for her vps donation
+        {"seed3.magpiecoin.org", "49.51.93.111"},
+    {"donation1.magpiecoin.org", "160.19.51.78"},     //Thanks to Hong Kong Ms. Chen for her vps donation
+    {"donation2.magpiecoin.org", "203.78.141.75"},     //Thanks to for this vps donation
+
     {NULL, NULL}
 };
 
