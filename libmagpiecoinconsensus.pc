@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: MagpieCoin Core consensus library
+Description: Library for the MagpieCoin consensus protocol.
+Version: 2.0.1
+Libs: -L${libdir} -lmagpiecoinconsensus
+Cflags: -I${includedir}
+Requires.private: libcrypto

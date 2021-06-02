@@ -1,9 +1,0 @@
-Building MagpieCoin
-
-See doc/readme-qt.rst for instructions on building MagpieCoin,
-the intended-for-end-users, nice-graphical-interface, reference
-implementation of MagpieCoin.
-
-See doc/build-*.txt for instructions on building magpiecoind,
-the intended-for-services, no-graphical-interface, reference
-implementation of MagpieCoin.

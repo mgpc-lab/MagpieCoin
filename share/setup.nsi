@@ -1,33 +1,37 @@
-Name MagpieCoin
+Name "MagpieCoin Core (-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.8.7.1
-!define COMPANY "MagpieCoin project"
-!define URL http://www.magpiecoin.org/
+!define VERSION 2.0.1
+!define COMPANY "MagpieCoin Core project"
+!define URL http://magpiecoin.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "../share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "../share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/home/lds/MagpieCoin-2.0/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/home/lds/MagpieCoin-2.0/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "../share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/home/lds/MagpieCoin-2.0/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER MagpieCoin
-!define MUI_FINISHPAGE_RUN $INSTDIR\magpiecoin-qt.exe
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "MagpieCoin Core"
+!define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
+!define MUI_FINISHPAGE_RUN_PARAMETERS $INSTDIR\@BITCOIN_GUI_NAME@
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "../share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/home/lds/MagpieCoin-2.0/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
 !include Sections.nsh
 !include MUI2.nsh
+!if "" == "64"
+!include x64.nsh
+!endif
 
 # Variables
 Var StartMenuGroup
@@ -45,14 +49,18 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile magpiecoin-${VERSION}-win32-setup.exe
-InstallDir $PROGRAMFILES\MagpieCoin
+OutFile /home/lds/MagpieCoin-2.0/MagpieCoin-${VERSION}-win-setup.exe
+!if "" == "64"
+InstallDir $PROGRAMFILES64\Bitcoin
+!else
+InstallDir $PROGRAMFILES\Bitcoin
+!endif
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-VIProductVersion ${VERSION}
-VIAddVersionKey ProductName MagpieCoin
+VIProductVersion ${VERSION}.0
+VIAddVersionKey ProductName "MagpieCoin Core"
 VIAddVersionKey ProductVersion "${VERSION}"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
@@ -66,19 +74,17 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File ../release/magpiecoin-qt.exe
-    File /oname=COPYING.txt ../COPYING
-    File /oname=readme.txt ../doc/README_windows.txt
+    File /home/lds/MagpieCoin-2.0/release/@BITCOIN_GUI_NAME@
+    File /oname=COPYING.txt /home/lds/MagpieCoin-2.0/COPYING
+    File /oname=readme.txt /home/lds/MagpieCoin-2.0/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File ../src/magpiecoind.exe
-    SetOutPath $INSTDIR\src
-    File /r /x *.exe /x *.o ../src\*.*
+    File /home/lds/MagpieCoin-2.0/release/@BITCOIN_DAEMON_NAME@
+    File /home/lds/MagpieCoin-2.0/release/@BITCOIN_CLI_NAME@
+    File /home/lds/MagpieCoin-2.0/release/@BITCOIN_TX_NAME@
+    SetOutPath $INSTDIR\doc
+    File /r /x Makefile* /home/lds/MagpieCoin-2.0/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
-
-    # Remove old wxwidgets-based-bitcoin executable and locales:
-    Delete /REBOOTOK $INSTDIR\magpiecoin.exe
-    RMDir /r /REBOOTOK $INSTDIR\locale
 SectionEnd
 
 Section -post SEC0001
@@ -87,8 +93,9 @@ Section -post SEC0001
     WriteUninstaller $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\MagpieCoin.lnk" $INSTDIR\magpiecoin-qt.exe
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall MagpieCoin.lnk" $INSTDIR\uninstall.exe
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\@BITCOIN_GUI_NAME@
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\MagpieCoin Core (testnet, -bit).lnk" "$INSTDIR\@BITCOIN_GUI_NAME@" "-testnet" "$INSTDIR\@BITCOIN_GUI_NAME@" 1
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
@@ -98,10 +105,10 @@ Section -post SEC0001
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
-    WriteRegStr HKCR "magpiecoin" "URL Protocol" ""
-    WriteRegStr HKCR "magpiecoin" "" "URL:MagpieCoin"
-    WriteRegStr HKCR "magpiecoin\DefaultIcon" "" $INSTDIR\magpiecoin-qt.exe
-    WriteRegStr HKCR "magpiecoin\shell\open\command" "" '"$INSTDIR\magpiecoin-qt.exe" "%1"'
+    WriteRegStr HKCR "MagpieCoin" "URL Protocol" ""
+    WriteRegStr HKCR "MagpieCoin" "" "URL:Bitcoin"
+    WriteRegStr HKCR "MagpieCoin\DefaultIcon" "" $INSTDIR\@BITCOIN_GUI_NAME@
+    WriteRegStr HKCR "MagpieCoin\shell\open\command" "" '"$INSTDIR\@BITCOIN_GUI_NAME@" "%1"'
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -119,19 +126,20 @@ done${UNSECTION_ID}:
 
 # Uninstaller sections
 Section /o -un.Main UNSEC0000
-    Delete /REBOOTOK $INSTDIR\magpiecoin-qt.exe
+    Delete /REBOOTOK $INSTDIR\@BITCOIN_GUI_NAME@
     Delete /REBOOTOK $INSTDIR\COPYING.txt
     Delete /REBOOTOK $INSTDIR\readme.txt
     RMDir /r /REBOOTOK $INSTDIR\daemon
-    RMDir /r /REBOOTOK $INSTDIR\src
+    RMDir /r /REBOOTOK $INSTDIR\doc
     DeleteRegValue HKCU "${REGKEY}\Components" Main
 SectionEnd
 
 Section -un.post UNSEC0001
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall MagpieCoin.lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\MagpieCoin.lnk"
-    Delete /REBOOTOK "$SMSTARTUP\MagpieCoin.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\MagpieCoin Core (testnet, -bit).lnk"
+    Delete /REBOOTOK "$SMSTARTUP\Bitcoin.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     Delete /REBOOTOK $INSTDIR\debug.log
     Delete /REBOOTOK $INSTDIR\db.log
@@ -139,7 +147,7 @@ Section -un.post UNSEC0001
     DeleteRegValue HKCU "${REGKEY}" Path
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
-    DeleteRegKey HKCR "magpiecoin"
+    DeleteRegKey HKCR "MagpieCoin"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0
@@ -152,6 +160,15 @@ SectionEnd
 # Installer functions
 Function .onInit
     InitPluginsDir
+!if "" == "64"
+    ${If} ${RunningX64}
+      ; disable registry redirection (enable access to 64-bit portion of registry)
+      SetRegView 64
+    ${Else}
+      MessageBox MB_OK|MB_ICONSTOP "Cannot install 64-bit version on a 32-bit system."
+      Abort
+    ${EndIf}
+!endif
 FunctionEnd
 
 # Uninstaller functions
