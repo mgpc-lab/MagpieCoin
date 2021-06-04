@@ -118,10 +118,10 @@ UniValue generateBlocks(std::shared_ptr<CReserveScript> coinbaseScript, int nGen
     UniValue blockHashes(UniValue::VARR);
     while (nHeight < nHeightEnd && !ShutdownRequested())
     {
-        std::unique_ptr<CBlockTemplate> pblockmagpiecoin(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript));
-        if (!pblockmagpiecoin.get())
+        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript));
+        if (!pblocktemplate.get())
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
-        CBlock *pblock = &pblockmagpiecoin->block;
+        CBlock *pblock = &pblocktemplate->block;
         {
             LOCK(cs_main);
             IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
@@ -287,23 +287,23 @@ static std::string gbt_vb_name(const Consensus::DeploymentPos pos) {
     return s;
 }
 
-static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
+static UniValue getblocktemplate(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
-            "getblockmagpiecoin ( TemplateRequest )\n"
-            "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'magpiecoin' request or a 'proposal'.\n"
+            "getblocktemplate ( TemplateRequest )\n"
+            "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
             "It returns data needed to construct a block to work on.\n"
             "For full specification, see BIPs 22, 23, 9, and 145:\n"
-            "    https://github.com/magpiecoin/bips/blob/master/bip-0022.mediawiki\n"
-            "    https://github.com/magpiecoin/bips/blob/master/bip-0023.mediawiki\n"
-            "    https://github.com/magpiecoin/bips/blob/master/bip-0009.mediawiki#getblockmagpiecoin_changes\n"
-            "    https://github.com/magpiecoin/bips/blob/master/bip-0145.mediawiki\n"
+            "    https://github.com/globalboost/bips/blob/master/bip-0022.mediawiki\n"
+            "    https://github.com/globalboost/bips/blob/master/bip-0023.mediawiki\n"
+            "    https://github.com/globalboost/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
+            "    https://github.com/globalboost/bips/blob/master/bip-0145.mediawiki\n"
 
             "\nArguments:\n"
-            "1. magpiecoin_request         (json object, optional) A json object in the following spec\n"
+            "1. template_request         (json object, optional) A json object in the following spec\n"
             "     {\n"
-            "       \"mode\":\"magpiecoin\"    (string, optional) This must be set to \"magpiecoin\", \"proposal\" (see BIP 23), or omitted\n"
+            "       \"mode\":\"template\"    (string, optional) This must be set to \"template\", \"proposal\" (see BIP 23), or omitted\n"
             "       \"capabilities\":[     (array, optional) A list of strings\n"
             "           \"support\"          (string) client side supported feature, 'longpoll', 'coinbasetxn', 'coinbasevalue', 'proposal', 'serverlist', 'workid'\n"
             "           ,...\n"
@@ -347,8 +347,8 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
             "  \"coinbasetxn\" : { ... },          (json object) information for coinbase transaction\n"
             "  \"target\" : \"xxxx\",                (string) The hash target\n"
             "  \"mintime\" : xxx,                  (numeric) The minimum timestamp appropriate for next block time in seconds since epoch (Jan 1 1970 GMT)\n"
-            "  \"mutable\" : [                     (array of string) list of ways the block magpiecoin may be changed \n"
-            "     \"value\"                          (string) A way the block magpiecoin may be changed, e.g. 'time', 'transactions', 'prevblock'\n"
+            "  \"mutable\" : [                     (array of string) list of ways the block template may be changed \n"
+            "     \"value\"                          (string) A way the block template may be changed, e.g. 'time', 'transactions', 'prevblock'\n"
             "     ,...\n"
             "  ],\n"
             "  \"noncerange\" : \"00000000ffffffff\",(string) A range of valid nonces\n"
@@ -361,13 +361,13 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
             "}\n"
 
             "\nExamples:\n"
-            + HelpExampleCli("getblockmagpiecoin", "{\"rules\": [\"segwit\"]}")
-            + HelpExampleRpc("getblockmagpiecoin", "{\"rules\": [\"segwit\"]}")
+            + HelpExampleCli("getblocktemplate", "{\"rules\": [\"segwit\"]}")
+            + HelpExampleRpc("getblocktemplate", "{\"rules\": [\"segwit\"]}")
          );
 
     LOCK(cs_main);
 
-    std::string strMode = "magpiecoin";
+    std::string strMode = "template";
     UniValue lpval = NullUniValue;
     std::set<std::string> setClientRules;
     int64_t nMaxVersionPreVB = -1;
@@ -429,7 +429,7 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
         }
     }
 
-    if (strMode != "magpiecoin")
+    if (strMode != "template")
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid mode");
 
     if(!g_connman)
@@ -486,7 +486,7 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
 
         if (!IsRPCRunning())
             throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Shutting down");
-        // TODO: Maybe recheck connections/IBD and (if something wrong) send an expires-immediately magpiecoin to stop miners?
+        // TODO: Maybe recheck connections/IBD and (if something wrong) send an expires-immediately template to stop miners?
     }
 
     const struct VBDeploymentInfo& segwit_info = VersionBitsDeploymentInfo[Consensus::DEPLOYMENT_SEGWIT];
@@ -498,7 +498,7 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
     // Update block
     static CBlockIndex* pindexPrev;
     static int64_t nStart;
-    static std::unique_ptr<CBlockTemplate> pblockmagpiecoin;
+    static std::unique_ptr<CBlockTemplate> pblocktemplate;
     // Cache whether the last invocation was with segwit support, to avoid returning
     // a segwit-block to a non-segwit caller.
     static bool fLastTemplateSupportsSegwit = true;
@@ -517,15 +517,15 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
 
         // Create new block
         CScript scriptDummy = CScript() << OP_TRUE;
-        pblockmagpiecoin = BlockAssembler(Params()).CreateNewBlock(scriptDummy, fSupportsSegwit);
-        if (!pblockmagpiecoin)
+        pblocktemplate = BlockAssembler(Params()).CreateNewBlock(scriptDummy, fSupportsSegwit);
+        if (!pblocktemplate)
             throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
 
         // Need to update only after we know CreateNewBlock succeeded
         pindexPrev = pindexPrevNew;
     }
     assert(pindexPrev);
-    CBlock* pblock = &pblockmagpiecoin->block; // pointer for convenience
+    CBlock* pblock = &pblocktemplate->block; // pointer for convenience
     const Consensus::Params& consensusParams = Params().GetConsensus();
 
     // Update nTime
@@ -562,9 +562,9 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
         }
         entry.pushKV("depends", deps);
 
-        int index_in_magpiecoin = i - 1;
-        entry.pushKV("fee", pblockmagpiecoin->vTxFees[index_in_magpiecoin]);
-        int64_t nTxSigOps = pblockmagpiecoin->vTxSigOpsCost[index_in_magpiecoin];
+        int index_in_template = i - 1;
+        entry.pushKV("fee", pblocktemplate->vTxFees[index_in_template]);
+        int64_t nTxSigOps = pblocktemplate->vTxSigOpsCost[index_in_template];
         if (fPreSegWit) {
             assert(nTxSigOps % WITNESS_SCALE_FACTOR == 0);
             nTxSigOps /= WITNESS_SCALE_FACTOR;
@@ -669,8 +669,8 @@ static UniValue getblockmagpiecoin(const JSONRPCRequest& request)
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));
 
-    if (!pblockmagpiecoin->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
-        result.pushKV("default_witness_commitment", HexStr(pblockmagpiecoin->vchCoinbaseCommitment.begin(), pblockmagpiecoin->vchCoinbaseCommitment.end()));
+    if (!pblocktemplate->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
+        result.pushKV("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end()));
     }
 
     return result;
@@ -938,7 +938,7 @@ static const CRPCCommand commands[] =
     { "mining",             "getnetworkhashps",       &getnetworkhashps,       {"nblocks","height"} },
     { "mining",             "getmininginfo",          &getmininginfo,          {} },
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","dummy","fee_delta"} },
-    { "mining",             "getblockmagpiecoin",       &getblockmagpiecoin,       {"magpiecoin_request"} },
+    { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
     { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
 
 
