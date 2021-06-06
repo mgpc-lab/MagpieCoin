@@ -322,6 +322,12 @@ void MagpieCoinGUI::createActions()
     showHelpMessageAction->setMenuRole(QAction::NoRole);
     showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible MagpieCoin command-line options").arg(tr(PACKAGE_NAME)));
 
+    openWebAction = new QAction(tr("&Website"), this);
+    openWebAction->setStatusTip(tr("Open the MagpieCoin website in a web browser."));
+
+    openChatroomAction = new QAction(tr("&Chatroom"), this);
+    openChatroomAction->setStatusTip(tr("Open the MagpieCoin Discord chat in a web browser."));
+
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -331,6 +337,9 @@ void MagpieCoinGUI::createActions()
     connect(openRPCConsoleAction, SIGNAL(triggered()), this, SLOT(showDebugWindow()));
     // prevents an open debug window from becoming stuck/unusable on client shutdown
     connect(quitAction, SIGNAL(triggered()), rpcConsole, SLOT(hide()));
+
+    connect(openWebAction, SIGNAL(triggered()), this, SLOT(openWeb()));
+    connect(openChatroomAction, SIGNAL(triggered()), this, SLOT(openChatroom()));
 
 #ifdef ENABLE_WALLET
     if(walletFrame)
@@ -391,6 +400,8 @@ void MagpieCoinGUI::createMenuBar()
     {
         help->addAction(openRPCConsoleAction);
     }
+    help->addAction(openWebAction);
+    help->addAction(openChatroomAction);
     help->addAction(showHelpMessageAction);
     help->addSeparator();
     help->addAction(aboutAction);
@@ -722,6 +733,15 @@ void MagpieCoinGUI::gotoVerifyMessageTab(QString addr)
 {
     if (walletFrame) walletFrame->gotoVerifyMessageTab(addr);
 }
+
+void MagpieCoinGUI::openWeb() {
+    QDesktopServices::openUrl(QUrl("https://magpiecoin.org/"));
+}
+
+void MagpieCoinGUI::openChatroom() {
+    QDesktopServices::openUrl(QUrl("https://discord.gg/jBx52PNxdp"));
+}
+
 #endif // ENABLE_WALLET
 
 void MagpieCoinGUI::updateNetworkState()
