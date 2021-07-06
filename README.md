@@ -16,7 +16,6 @@ Mission
 2. MagpieCoin will be integrated into 2D/3D games.
 3. Funding to aid students and faculties.
 
-
 Profile
 Name: Magpiecoin
 Ticker: MGPC
@@ -25,10 +24,6 @@ Maximum Supply: 68,948,811,840
 Block time: 2.0 minutes
 SubsidyHalvingInterval: 420000 blocks
 Consensus: POW
-
-![Block Reward](http://magpiecoin.org/images/br.png)
-
-
 
 # Airdrop-2-POGE
 
