@@ -123,6 +123,8 @@ private:
     QAction* openRPCConsoleAction = nullptr;
     QAction* openAction = nullptr;
     QAction* showHelpMessageAction = nullptr;
+    QAction* openWebAction = nullptr;
+    QAction* openChatroomAction = nullptr;
     QAction* m_wallet_selector_label_action = nullptr;
     QAction* m_wallet_selector_action = nullptr;
 
@@ -247,6 +249,11 @@ private Q_SLOTS:
     void showDebugWindowActivateConsole();
     /** Show help message dialog */
     void showHelpMessageClicked();
+
+    // Open chatroom / forum URL in the system's browser.
+    void openWeb();
+    void openChatroom();
+
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);

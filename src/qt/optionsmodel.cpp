@@ -52,6 +52,11 @@ void OptionsModel::Init(bool resetSettings)
 
     // These are Qt-only settings:
 
+    // Wallet
+    if (!settings.contains("fCoinControlFeatures"))
+        settings.setValue("fCoinControlFeatures", false);
+    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
+
     // Window
     if (!settings.contains("fHideTrayIcon"))
         settings.setValue("fHideTrayIcon", false);
@@ -72,12 +77,8 @@ void OptionsModel::Init(bool resetSettings)
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
-        settings.setValue("strThirdPartyTxUrls", "");
-    strThirdPartyTxUrls = settings.value("strThirdPartyTxUrls", "").toString();
-
-    if (!settings.contains("fCoinControlFeatures"))
-        settings.setValue("fCoinControlFeatures", false);
-    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
+        settings.setValue("strThirdPartyTxUrls", "http://explorer.magpiecoin.org/tx/%s");
+    strThirdPartyTxUrls = settings.value("strThirdPartyTxUrls", "http://explorer.magpiecoin.org/tx/%s").toString();
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
