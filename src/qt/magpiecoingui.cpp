@@ -736,7 +736,7 @@ void MagpieCoinGUI::gotoVerifyMessageTab(QString addr)
 }
 
 void MagpieCoinGUI::openWeb() {
-    QDesktopServices::openUrl(QUrl("https://magpiecoin.org/"));
+    QDesktopServices::openUrl(QUrl("http://mgpcexplorer.animalcoins.top:3030/"));
 }
 
 void MagpieCoinGUI::openChatroom() {
