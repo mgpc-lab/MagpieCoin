@@ -9,6 +9,7 @@ Make sure there is a mine.
 Because mankind's love for mining is endless. : P
 
 New Website of Explorer
+
 http://mgpcexplorer.animalcoins.top:3030/
 
 
