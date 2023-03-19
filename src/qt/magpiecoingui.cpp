@@ -56,6 +56,7 @@
 #include <QToolBar>
 #include <QUrlQuery>
 #include <QVBoxLayout>
+#include <QDesktopServices>
 
 const std::string MagpieCoinGUI::DEFAULT_UIPLATFORM =
 #if defined(Q_OS_MAC)
