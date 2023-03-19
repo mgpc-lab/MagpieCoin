@@ -8,8 +8,9 @@ Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm
 Make sure there is a mine.
 Because mankind's love for mining is endless. : P
 
-Website
-http://magpiecoin.org/
+New Website of Explorer
+http://mgpcexplorer.animalcoins.top:3030/
+
 
 Mission
 1. You can mine with your CPU
