@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/clientmodel.h>
-
+#include <boost/bind.hpp>
 #include <qt/bantablemodel.h>
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
