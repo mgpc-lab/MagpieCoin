@@ -9,7 +9,7 @@
 #include <qt/splashscreen.h>
 
 #include <qt/networkstyle.h>
-
+#include <boost/bind.hpp>
 #include <clientversion.h>
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
