@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <qt/magpiecoingui.h>
-
+#include <boost/bind.hpp>
 #include <qt/magpiecoinunits.h>
 #include <qt/clientmodel.h>
 #include <qt/guiconstants.h>
