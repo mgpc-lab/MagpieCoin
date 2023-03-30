@@ -8,6 +8,7 @@ Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm.
 Because mankind's love for mining is endless. : P
 
 New Website of MagpieCoin
+
 http://magpiecoin.animalcoins.top/
 
 New Website of Explorer
