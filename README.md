@@ -4,9 +4,11 @@ MagpieCoin
 
 ![MagpieCoin](http://mgpcexplorer.animalcoins.top:3030/img/logo.png)
 
-Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm
-Make sure there is a mine.
+Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm.
 Because mankind's love for mining is endless. : P
+
+New Website of MagpieCoin
+http://magpiecoin.animalcoins.top/
 
 New Website of Explorer
 
