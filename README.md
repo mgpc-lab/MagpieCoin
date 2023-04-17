@@ -7,6 +7,10 @@ MagpieCoin
 Yet Another CPU Mineable POW Cryptocurrency using Yespower Algorithm.
 Because mankind's love for mining is endless. : P
 
+
+Our slogan is: Anyone can dig, any equipment can dig, in anywhere can dig, at anytime can dig and get mines😀
+
+
 New Website of MagpieCoin
 
 http://magpiecoin.animalcoins.top/
